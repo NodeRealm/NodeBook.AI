@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coloring Book Buddy</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="app">
+      <header>
+        <div>
+          <p class="tag">AI Coloring Page Helper</p>
+          <h1>Coloring Book Buddy</h1>
+          <p class="subtitle">
+            Chat with a friendly helper to craft kid-safe coloring book prompts in seconds.
+          </p>
+        </div>
+        <div class="options">
+          <label>
+            Age range
+            <select id="ageRange">
+              <option value="ages 3-5">Ages 3-5</option>
+              <option value="ages 5-7" selected>Ages 5-7</option>
+              <option value="ages 7-9">Ages 7-9</option>
+            </select>
+          </label>
+          <label>
+            Detail level
+            <select id="detailLevel">
+              <option value="simple shapes with large spaces" selected>Simple</option>
+              <option value="medium detail with clear outlines">Medium</option>
+              <option value="more intricate details, still kid-friendly">Detailed</option>
+            </select>
+          </label>
+          <label>
+            Line style
+            <select id="lineStyle">
+              <option value="bold, clean black outlines" selected>Bold</option>
+              <option value="soft, clean black outlines">Soft</option>
+            </select>
+          </label>
+        </div>
+      </header>
+
+      <main>
+        <section class="chat" id="chat"></section>
+        <section class="quick-prompts">
+          <p class="section-title">Try a quick idea:</p>
+          <div class="prompt-buttons">
+            <button data-prompt="a playful puppy learning to skateboard">Playful puppy</button>
+            <button data-prompt="a magical forest with friendly animals">Magical forest</button>
+            <button data-prompt="a brave astronaut exploring a moon base">Astronaut adventure</button>
+            <button data-prompt="a cozy bakery with smiling cupcakes">Cupcake bakery</button>
+          </div>
+        </section>
+      </main>
+
+      <footer>
+        <form id="chatForm">
+          <input
+            type="text"
+            id="userInput"
+            placeholder="Describe the coloring page idea..."
+            autocomplete="off"
+          />
+          <button type="submit">Send</button>
+        </form>
+        <button class="copy" id="copyPrompt">Copy latest prompt</button>
+      </footer>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
