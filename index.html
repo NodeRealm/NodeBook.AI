@@ -19,7 +19,7 @@
           <p class="tag">AI Coloring Page Helper</p>
           <h1>Coloring Book Buddy</h1>
           <p class="subtitle">
-            Chat with a friendly helper to craft kid-safe coloring book prompts in seconds.
+            Describe an idea and the buddy will generate a full coloring page preview for kids.
           </p>
         </div>
         <div class="options">
@@ -51,6 +51,17 @@
 
       <main>
         <section class="chat" id="chat"></section>
+        <section class="preview">
+          <div class="preview-header">
+            <p class="section-title">Generated coloring page</p>
+            <button class="secondary" id="downloadSvg" disabled>Download SVG</button>
+          </div>
+          <div class="canvas" id="canvas">
+            <p class="placeholder">
+              Your coloring page will appear here after you describe an idea.
+            </p>
+          </div>
+        </section>
         <section class="quick-prompts">
           <p class="section-title">Try a quick idea:</p>
           <div class="prompt-buttons">
@@ -72,7 +83,10 @@
           />
           <button type="submit">Send</button>
         </form>
-        <button class="copy" id="copyPrompt">Copy latest prompt</button>
+        <div class="footer-actions">
+          <button class="copy" id="copyPrompt">Copy latest prompt</button>
+          <button class="secondary" id="generatePage">Make a page</button>
+        </div>
       </footer>
     </div>
 

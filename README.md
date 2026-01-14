@@ -4,7 +4,7 @@ AI book maker
 
 ## Coloring Book Buddy
 
-This project now includes a lightweight front-end chatbot that helps craft kid-friendly coloring book page prompts.
+This project includes a lightweight front-end chatbot that creates kid-friendly coloring book page prompts and generates a printable SVG coloring page preview.
 
 ### Run locally
 
