@@ -46,7 +46,7 @@
     }
 
     .book.is-open {
-      transform: rotateY(-10deg);
+      transform: rotateY(-6deg);
     }
 
     .book-inner {
@@ -69,12 +69,18 @@
     .cover {
       background: linear-gradient(135deg, #0b0606 0%, var(--book-brown) 45%, var(--book-highlight) 100%);
       border: 2px solid #2f1b1b;
+      transform-origin: left center;
+      transition: transform 1.2s ease;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       gap: 1.5rem;
       padding: 2rem;
+    }
+
+    .book.is-open .cover {
+      transform: rotateY(-180deg);
     }
 
     .cover h1 {
@@ -112,7 +118,7 @@
       background: var(--paper);
       color: var(--ink);
       padding: 2.5rem 3rem;
-      transform: rotateY(180deg);
+      transform: rotateY(0deg);
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 2rem;
