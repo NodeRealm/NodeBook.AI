@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aaron's Will - Living Book</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: "Georgia", "Times New Roman", serif;
+      --book-brown: #1b0f0f;
+      --book-highlight: #3b1c1c;
+      --paper: #f7f1e4;
+      --ink: #2a1b15;
+      --accent: #c59d5f;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #2c1b1b 0%, #0a0606 55%, #050303 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #f4e7d0;
+      padding: 2rem;
+    }
+
+    .book-stage {
+      perspective: 1600px;
+      width: min(90vw, 1100px);
+      height: min(80vh, 680px);
+      position: relative;
+    }
+
+    .book {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 1.2s ease;
+    }
+
+    .book.is-open {
+      transform: rotateY(-10deg);
+    }
+
+    .book-inner {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      transform-style: preserve-3d;
+    }
+
+    .cover,
+    .page {
+      position: absolute;
+      inset: 0;
+      border-radius: 12px;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+      backface-visibility: hidden;
+      overflow: hidden;
+    }
+
+    .cover {
+      background: linear-gradient(135deg, #0b0606 0%, var(--book-brown) 45%, var(--book-highlight) 100%);
+      border: 2px solid #2f1b1b;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      padding: 2rem;
+    }
+
+    .cover h1 {
+      font-size: clamp(2.4rem, 4vw, 3.6rem);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin: 0;
+    }
+
+    .cover p {
+      margin: 0;
+      font-size: 1rem;
+      opacity: 0.8;
+    }
+
+    .cover button {
+      background: transparent;
+      border: 2px solid var(--accent);
+      color: var(--accent);
+      padding: 0.8rem 2.4rem;
+      font-size: 1rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: transform 0.3s ease, background 0.3s ease;
+    }
+
+    .cover button:hover {
+      background: var(--accent);
+      color: #1b0f0f;
+      transform: translateY(-2px);
+    }
+
+    .page {
+      background: var(--paper);
+      color: var(--ink);
+      padding: 2.5rem 3rem;
+      transform: rotateY(180deg);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .page::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 4px;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.05));
+      transform: translateX(-50%);
+    }
+
+    .page h2 {
+      font-size: 1.8rem;
+      margin-top: 0;
+      margin-bottom: 1rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .page h3 {
+      margin-top: 0;
+      font-size: 1.3rem;
+    }
+
+    .profile-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 1.2rem;
+      align-content: start;
+    }
+
+    .profile-card {
+      background: #fff7ea;
+      border: 1px solid rgba(42, 27, 21, 0.15);
+      border-radius: 16px;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .profile-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    .avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #d9b38c, #f1d9ba);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: #5c3a2e;
+      font-size: 1.4rem;
+    }
+
+    .profile-name {
+      font-size: 1rem;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .profile-detail {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      height: 100%;
+    }
+
+    .profile-detail video {
+      width: 100%;
+      border-radius: 16px;
+      border: 2px solid rgba(42, 27, 21, 0.15);
+      background: #1b0f0f;
+    }
+
+    .letter {
+      background: #fffaf3;
+      border: 1px solid rgba(42, 27, 21, 0.12);
+      border-radius: 14px;
+      padding: 1rem 1.2rem;
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+
+    .nav-actions button {
+      background: var(--ink);
+      color: var(--paper);
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: opacity 0.2s ease;
+    }
+
+    .nav-actions button:hover {
+      opacity: 0.8;
+    }
+
+    .page-left,
+    .page-right {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .page-right {
+      padding-left: 1rem;
+    }
+
+    .page-left {
+      padding-right: 1rem;
+    }
+
+    .page-right h2 {
+      margin-bottom: 0.4rem;
+    }
+
+    @media (max-width: 900px) {
+      .page {
+        grid-template-columns: 1fr;
+      }
+
+      .page::before {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="book-stage">
+    <div class="book" id="book">
+      <div class="book-inner">
+        <section class="cover" id="cover">
+          <h1>Aaron's Will</h1>
+          <p>A living will captured inside a timeless black book.</p>
+          <button type="button" id="openBook">Open the Book</button>
+        </section>
+        <section class="page" id="mainPage">
+          <div class="page-left">
+            <h2>In Loving Care</h2>
+            <p>Choose a profile to open their page and view a personal message and letter.</p>
+            <div class="profile-grid" id="profileGrid"></div>
+          </div>
+          <div class="page-right">
+            <h2 id="profileTitle">Select a Profile</h2>
+            <div class="profile-detail">
+              <video id="profileVideo" controls poster="">
+                <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+              <div class="letter" id="profileLetter">
+                Click a profile picture to reveal a personalized video and letter.
+              </div>
+              <div class="nav-actions">
+                <button type="button" id="backToGrid">Back to Profiles</button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const profiles = [
+      {
+        name: "Felicia",
+        letter:
+          "Felicia, your compassion lights up every room. This message is a reminder that you are cherished, supported, and surrounded by love.",
+      },
+      {
+        name: "Amanda",
+        letter:
+          "Amanda, thank you for your steady strength. This note honors every memory we have built and the joy you continue to bring.",
+      },
+      {
+        name: "Rickey",
+        letter:
+          "Rickey, your laughter is a legacy. Keep it close and know that you are celebrated beyond measure.",
+      },
+      {
+        name: "Rachel",
+        letter:
+          "Rachel, you have always shown kindness in every moment. This letter is a promise that you are remembered and treasured.",
+      },
+      {
+        name: "Patresa",
+        letter:
+          "Patresa, your resilience inspires everyone around you. This page holds gratitude and unwavering love just for you.",
+      },
+      {
+        name: "Angie",
+        letter:
+          "Angie, you bring warmth and calm to every gathering. May this message be a reminder of how deeply you are valued.",
+      },
+      {
+        name: "Jackie",
+        letter:
+          "Jackie, you are the heartbeat of our family stories. This letter carries appreciation for all you give.",
+      },
+      {
+        name: "Kathy",
+        letter:
+          "Kathy, your guidance has shaped so much of our journey. May this note remind you of lasting gratitude and care.",
+      },
+    ];
+
+    const book = document.getElementById("book");
+    const openBook = document.getElementById("openBook");
+    const profileGrid = document.getElementById("profileGrid");
+    const profileTitle = document.getElementById("profileTitle");
+    const profileLetter = document.getElementById("profileLetter");
+    const backToGrid = document.getElementById("backToGrid");
+
+    const createProfileCard = (profile) => {
+      const card = document.createElement("button");
+      card.type = "button";
+      card.className = "profile-card";
+      card.dataset.name = profile.name;
+      card.dataset.letter = profile.letter;
+
+      const avatar = document.createElement("div");
+      avatar.className = "avatar";
+      avatar.textContent = profile.name.slice(0, 1);
+
+      const name = document.createElement("div");
+      name.className = "profile-name";
+      name.textContent = profile.name;
+
+      card.appendChild(avatar);
+      card.appendChild(name);
+
+      return card;
+    };
+
+    profiles.forEach((profile) => {
+      profileGrid.appendChild(createProfileCard(profile));
+    });
+
+    const selectProfile = (name, letter) => {
+      profileTitle.textContent = `${name}'s Page`;
+      profileLetter.textContent = letter;
+    };
+
+    openBook.addEventListener("click", () => {
+      book.classList.add("is-open");
+    });
+
+    profileGrid.addEventListener("click", (event) => {
+      const card = event.target.closest(".profile-card");
+      if (!card) {
+        return;
+      }
+      selectProfile(card.dataset.name, card.dataset.letter);
+    });
+
+    backToGrid.addEventListener("click", () => {
+      profileTitle.textContent = "Select a Profile";
+      profileLetter.textContent = "Click a profile picture to reveal a personalized video and letter.";
+    });
+  </script>
+</body>
+</html>
