@@ -120,41 +120,6 @@
       font-weight: 600;
     }
 
-    .login-form {
-      display: grid;
-      gap: 1rem;
-    }
-
-    .login-form label {
-      font-size: 0.95rem;
-      color: var(--muted);
-    }
-
-    .login-form input {
-      width: 100%;
-      padding: 0.75rem 1rem;
-      border-radius: 10px;
-      border: 1px solid rgba(143, 91, 255, 0.3);
-      background: #0b0b14;
-      color: var(--text);
-      font-size: 1rem;
-    }
-
-    .login-form button {
-      padding: 0.75rem 1.2rem;
-      border-radius: 999px;
-      border: none;
-      background: var(--accent);
-      color: #0b0b12;
-      font-weight: 700;
-      cursor: pointer;
-      transition: opacity 0.2s ease;
-    }
-
-    .login-form button:hover {
-      opacity: 0.85;
-    }
-
     .helper {
       color: var(--muted);
       font-size: 0.9rem;
@@ -224,7 +189,7 @@
   <div class="app">
     <header>
       <h1>Aaron's Will</h1>
-      <p>A living will hub. Choose your profile, enter your password, and view your personal video and letter.</p>
+      <p>A living will hub. Choose your profile to view your personal video and letter.</p>
     </header>
     <main>
       <section class="panel">
@@ -232,14 +197,9 @@
         <div class="profile-list" id="profileList"></div>
       </section>
       <section class="panel" id="loginPanel">
-        <h2>Login</h2>
-        <div class="helper" id="selectedProfile">Select a profile to continue.</div>
+        <h2>Profile Viewer</h2>
+        <div class="helper" id="selectedProfile">Select a profile to view their page.</div>
         <div class="status" id="statusMessage"></div>
-        <form class="login-form" id="loginForm">
-          <label for="password">Password</label>
-          <input type="password" id="password" name="password" placeholder="Enter password" required />
-          <button type="submit">Unlock Profile</button>
-        </form>
         <div class="profile-view" id="profileView">
           <video controls>
             <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4" />
@@ -300,16 +260,12 @@
 
     const profileList = document.getElementById("profileList");
     const selectedProfile = document.getElementById("selectedProfile");
-    const loginForm = document.getElementById("loginForm");
-    const passwordInput = document.getElementById("password");
     const statusMessage = document.getElementById("statusMessage");
     const profileView = document.getElementById("profileView");
     const profileLetter = document.getElementById("profileLetter");
     const resetLogin = document.getElementById("resetLogin");
 
     let activeProfile = null;
-    const requiredPassword = "Kainex0305!";
-
     const showStatus = (message) => {
       statusMessage.textContent = message;
       statusMessage.classList.add("is-visible");
@@ -346,10 +302,9 @@
       activeProfile = profile;
       selectedProfile.textContent = `Selected profile: ${profile.name}`;
       clearStatus();
-      loginForm.style.display = "grid";
-      profileView.classList.remove("is-visible");
-      passwordInput.value = "";
-      passwordInput.focus();
+      profileView.classList.add("is-visible");
+      profileLetter.textContent = profile.letter;
+      showStatus(`${profile.name}'s profile is now open.`);
     };
 
     profileList.addEventListener("click", (event) => {
@@ -360,28 +315,10 @@
       selectProfile({ name: card.dataset.name, letter: card.dataset.letter });
     });
 
-    loginForm.addEventListener("submit", (event) => {
-      event.preventDefault();
-      if (!activeProfile) {
-        showStatus("Please select a profile first.");
-        return;
-      }
-      if (passwordInput.value.trim() !== requiredPassword) {
-        showStatus("Incorrect password. Please try again.");
-        return;
-      }
-      profileLetter.textContent = activeProfile.letter;
-      loginForm.style.display = "none";
-      profileView.classList.add("is-visible");
-      showStatus(`${activeProfile.name}'s profile is now unlocked.`);
-    });
-
     resetLogin.addEventListener("click", () => {
       activeProfile = null;
-      selectedProfile.textContent = "Select a profile to continue.";
-      loginForm.style.display = "grid";
+      selectedProfile.textContent = "Select a profile to view their page.";
       profileView.classList.remove("is-visible");
-      passwordInput.value = "";
       clearStatus();
     });
 
