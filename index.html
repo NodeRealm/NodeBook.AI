@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aaron's Will - Profiles</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: "Inter", "Segoe UI", sans-serif;
+      --bg: #0b0b12;
+      --panel: #151522;
+      --panel-light: #1d1d2e;
+      --accent: #8f5bff;
+      --accent-soft: rgba(143, 91, 255, 0.2);
+      --text: #f4f0ff;
+      --muted: #b9b3d6;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #1a1530 0%, var(--bg) 55%, #050508 100%);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2.5rem;
+    }
+
+    .app {
+      width: min(100%, 980px);
+      background: linear-gradient(145deg, var(--panel) 0%, #0f0f1a 100%);
+      border-radius: 20px;
+      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.55);
+      border: 1px solid rgba(143, 91, 255, 0.2);
+      overflow: hidden;
+    }
+
+    header {
+      padding: 2rem 2.5rem 1.5rem;
+      border-bottom: 1px solid rgba(143, 91, 255, 0.2);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    header p {
+      margin: 0.6rem 0 0;
+      color: var(--muted);
+      max-width: 640px;
+    }
+
+    .about-grid {
+      margin-top: 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .about-card {
+      background: var(--panel-light);
+      border-radius: 14px;
+      padding: 1rem 1.2rem;
+      border: 1px solid rgba(143, 91, 255, 0.2);
+    }
+
+    .about-card h3 {
+      margin: 0 0 0.5rem;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .about-card p,
+    .about-card li {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .about-card ul {
+      padding-left: 1.2rem;
+      margin: 0;
+      display: grid;
+      gap: 0.4rem;
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      padding: 2rem 2.5rem 2.5rem;
+    }
+
+    .panel {
+      background: var(--panel-light);
+      border-radius: 16px;
+      padding: 1.5rem;
+      border: 1px solid rgba(143, 91, 255, 0.2);
+      min-height: 420px;
+    }
+
+    .panel h2 {
+      margin: 0 0 1rem;
+      font-size: 1.3rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .profile-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1rem;
+    }
+
+    .profile-card {
+      background: #0d0d17;
+      border: 1px solid transparent;
+      border-radius: 14px;
+      padding: 1rem;
+      text-align: center;
+      cursor: pointer;
+      transition: border 0.2s ease, transform 0.2s ease;
+      color: var(--text);
+    }
+
+    .profile-card:hover {
+      border-color: rgba(143, 91, 255, 0.6);
+      transform: translateY(-4px);
+    }
+
+    .avatar {
+      width: 56px;
+      height: 56px;
+      margin: 0 auto 0.6rem;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #381b72, #8f5bff);
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+
+    .profile-card span {
+      display: block;
+      font-weight: 600;
+    }
+
+    .profile-card small {
+      display: block;
+      margin-top: 0.2rem;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    .helper {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .status {
+      background: var(--accent-soft);
+      color: var(--text);
+      padding: 0.6rem 0.9rem;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      display: none;
+    }
+
+    .status.is-visible {
+      display: block;
+    }
+
+    .profile-view {
+      display: none;
+      gap: 1rem;
+    }
+
+    .profile-view.is-visible {
+      display: grid;
+    }
+
+    .profile-view video {
+      width: 100%;
+      border-radius: 14px;
+      border: 1px solid rgba(143, 91, 255, 0.3);
+      background: #050508;
+    }
+
+    .letter {
+      background: #0d0d18;
+      border-radius: 12px;
+      padding: 1rem;
+      border: 1px solid rgba(143, 91, 255, 0.2);
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .actions {
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+
+    .actions button {
+      padding: 0.6rem 1.1rem;
+      border-radius: 999px;
+      border: 1px solid rgba(143, 91, 255, 0.5);
+      background: transparent;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    @media (max-width: 880px) {
+      body {
+        padding: 1.5rem;
+      }
+
+      .app {
+        border-radius: 16px;
+      }
+
+      header {
+        padding: 1.5rem;
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+
+      main {
+        grid-template-columns: 1fr;
+        padding: 1.5rem;
+      }
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 1rem;
+      }
+
+      header h1 {
+        font-size: 1.6rem;
+      }
+
+      .panel {
+        padding: 1.2rem;
+        min-height: auto;
+      }
+
+      .profile-list {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <h1>Aaron's Will</h1>
+      <p>A living will hub. Choose your profile to view your personal video and letter.</p>
+      <div class="about-grid">
+        <div class="about-card">
+          <h3>Aaron Pinedo</h3>
+          <p><strong>Date of Birth:</strong> 06/29/1991</p>
+          <p>Known for a steady heart, deep loyalty, and showing up for family with humility and warmth.</p>
+        </div>
+        <div class="about-card">
+          <h3>Why My Life Mattered</h3>
+          <p>
+            I tried to be the kind of person people could count on. I listened, I learned, and I led with kindness.
+            My life was worth living because it was filled with love, growth, and a commitment to lifting others up.
+          </p>
+        </div>
+        <div class="about-card">
+          <h3>Achievements</h3>
+          <ul>
+            <li>Built a loving, close-knit family and stayed present for the moments that mattered.</li>
+            <li>Created lifelong friendships rooted in trust, honesty, and humor.</li>
+            <li>Worked hard, kept my word, and provided steady support for those I love.</li>
+            <li>Faced challenges with resilience and kept moving forward with purpose.</li>
+          </ul>
+        </div>
+        <div class="about-card">
+          <h3>Legacy</h3>
+          <p>
+            Remember me for the care I gave, the laughter we shared, and the way I tried to make every day a little
+            brighter for the people around me.
+          </p>
+        </div>
+      </div>
+    </header>
+    <main>
+      <section class="panel">
+        <h2>Choose a Profile</h2>
+        <div class="profile-list" id="profileList"></div>
+      </section>
+      <section class="panel" id="loginPanel">
+        <h2>Profile Viewer</h2>
+        <div class="helper" id="selectedProfile">Select a profile to view their page.</div>
+        <div class="status" id="statusMessage"></div>
+        <div class="profile-view" id="profileView">
+          <video controls>
+            <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          <div class="letter" id="profileLetter"></div>
+          <div class="actions">
+            <button type="button" id="resetLogin">Back to profiles</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const profiles = [
+      {
+        name: "Amanda",
+        relationship: "Sister",
+        letter:
+          "Amanda, my sister, thank you for your steady strength. This note honors every memory we have built and the joy you continue to bring.",
+      },
+      {
+        name: "Angie",
+        relationship: "Sister",
+        letter:
+          "Angie, my sister, you bring warmth and calm to every gathering. May this message be a reminder of how deeply you are valued.",
+      },
+      {
+        name: "Felicia",
+        relationship: "Sister",
+        letter:
+          "Felicia, my sister, your compassion lights up every room. This message is a reminder that you are cherished, supported, and surrounded by love.",
+      },
+      {
+        name: "Kaine",
+        relationship: "Son",
+        letter:
+          "Kaine, my son, your spirit is a steady light in our lives. This page holds love and gratitude for the memories we share.",
+      },
+      {
+        name: "Kathy",
+        relationship: "Sister",
+        letter:
+          "Kathy, my sister, your guidance has shaped so much of our journey. May this note remind you of lasting gratitude and care.",
+      },
+      {
+        name: "Patresa",
+        relationship: "Sister",
+        letter:
+          "Patresa, my sister, your resilience inspires everyone around you. This page holds gratitude and unwavering love just for you.",
+      },
+      {
+        name: "Rachel",
+        relationship: "Sister",
+        letter:
+          "Rachel, my sister, you have always shown kindness in every moment. This letter is a promise that you are remembered and treasured.",
+      },
+      {
+        name: "Rickey",
+        relationship: "Brother",
+        letter:
+          "Rickey, my brother, your laughter is a legacy. Keep it close and know that you are celebrated beyond measure.",
+      },
+      {
+        name: "Shelley",
+        relationship: "Daughter",
+        letter:
+          "Shelley, my daughter, your kindness and warmth mean more than words. This message is a reminder of the care that surrounds you.",
+      },
+      {
+        name: "Yaquelin",
+        relationship: "Sister",
+        letter:
+          "Yaquelin, my sister, you are a steady presence in our family story. This page carries appreciation for all you give.",
+      },
+    ];
+
+    const profileList = document.getElementById("profileList");
+    const selectedProfile = document.getElementById("selectedProfile");
+    const statusMessage = document.getElementById("statusMessage");
+    const profileView = document.getElementById("profileView");
+    const profileLetter = document.getElementById("profileLetter");
+    const resetLogin = document.getElementById("resetLogin");
+
+    let activeProfile = null;
+    const showStatus = (message) => {
+      statusMessage.textContent = message;
+      statusMessage.classList.add("is-visible");
+    };
+
+    const clearStatus = () => {
+      statusMessage.textContent = "";
+      statusMessage.classList.remove("is-visible");
+    };
+
+    const renderProfiles = () => {
+      profileList.innerHTML = "";
+      profiles.forEach((profile) => {
+        const card = document.createElement("button");
+        card.type = "button";
+        card.className = "profile-card";
+        card.dataset.name = profile.name;
+        card.dataset.letter = profile.letter;
+        card.dataset.relationship = profile.relationship;
+
+        const avatar = document.createElement("div");
+        avatar.className = "avatar";
+        avatar.textContent = profile.name[0];
+
+        const name = document.createElement("span");
+        name.textContent = profile.name;
+
+        const relationship = document.createElement("small");
+        relationship.textContent = profile.relationship;
+
+        card.appendChild(avatar);
+        card.appendChild(name);
+        card.appendChild(relationship);
+        profileList.appendChild(card);
+      });
+    };
+
+    const selectProfile = (profile) => {
+      activeProfile = profile;
+      selectedProfile.textContent = `Selected profile: ${profile.name} (${profile.relationship})`;
+      clearStatus();
+      profileView.classList.add("is-visible");
+      profileLetter.textContent = profile.letter;
+      showStatus(`${profile.name}'s profile is now open.`);
+    };
+
+    profileList.addEventListener("click", (event) => {
+      const card = event.target.closest(".profile-card");
+      if (!card) {
+        return;
+      }
+      selectProfile({
+        name: card.dataset.name,
+        relationship: card.dataset.relationship,
+        letter: card.dataset.letter,
+      });
+    });
+
+    resetLogin.addEventListener("click", () => {
+      activeProfile = null;
+      selectedProfile.textContent = "Select a profile to view their page.";
+      profileView.classList.remove("is-visible");
+      clearStatus();
+    });
+
+    renderProfiles();
+  </script>
+</body>
+</html>
