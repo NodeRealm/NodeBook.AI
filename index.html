@@ -222,8 +222,44 @@
     }
 
     @media (max-width: 880px) {
+      body {
+        padding: 1.5rem;
+      }
+
+      .app {
+        border-radius: 16px;
+      }
+
+      header {
+        padding: 1.5rem;
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+
       main {
         grid-template-columns: 1fr;
+        padding: 1.5rem;
+      }
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 1rem;
+      }
+
+      header h1 {
+        font-size: 1.6rem;
+      }
+
+      .panel {
+        padding: 1.2rem;
+        min-height: auto;
+      }
+
+      .profile-list {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
       }
     }
   </style>
